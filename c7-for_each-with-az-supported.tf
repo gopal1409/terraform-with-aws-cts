@@ -21,3 +21,18 @@ data "aws_ec2_instance_type_offerings" "my_inst_typ" {
   location_type = "availability-zone-id"
 }
 
+#output1
+#search for all az mapped to supported instance
+output "output_v3_1" {
+    value = {
+    for az, details in data.aws_ec2_instance_type_offerings.my_inst_typ: az => details.instance_types
+    }
+}
+
+#search for all az not supported instance type
+output "output_v3_2" {
+    value = {
+    for az, details in data.aws_ec2_instance_type_offerings.my_inst_typ: az => details.instance_types if length(details.instance_types)!=0
+    }
+}
+
